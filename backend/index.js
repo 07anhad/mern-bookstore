@@ -53,6 +53,18 @@ app.get('/books', async (request, response) => {
   }
 });
 
+//route for getting all books from data base via id
+app.get('/books/:id', async (request, response) => {
+  try {
+    const { id } = request.params;
+    const book = await Book.findById(id);
+    return response.status(200).json(book);
+  } catch(error) {
+    console.log(error.message);
+    return response.status(500).send({ message: error.message });
+  }
+});
+
 
 
 mongoose
