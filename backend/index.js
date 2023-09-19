@@ -65,6 +65,48 @@ app.get('/books/:id', async (request, response) => {
   }
 });
 
+//update books using put()
+
+app.put('/books/:id', async (request, response) => {
+  try {
+    const { id } = request.params;
+
+    if (!request.body.title && !request.body.author && !request.body.publishYear) {
+      return response.status(400).send({
+        message: 'Send at least one field to update - title, author, publish year'
+      });
+    }
+
+    const book = await Book.findById(id);
+
+    if (!book) {
+      return response.status(404).send({ message: 'Book not found' });
+    }
+
+    if (request.body.title) {
+      book.title = request.body.title;
+    }
+
+    if (request.body.author) {
+      book.author = request.body.author;
+    }
+
+    if (request.body.publishYear) {
+      book.publishYear = request.body.publishYear;
+    }
+
+    await book.save();
+
+    return response.status(200).send({
+      message: 'Book updated successfully',
+      book
+    });
+
+  } catch (error) {
+    console.log(error.message);
+    return response.status(500).send({ message: error.message });
+  }
+});
 
 
 mongoose
