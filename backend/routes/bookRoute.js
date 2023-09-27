@@ -1,11 +1,9 @@
-import express from 'express'
+import express from 'express';
 import { Book } from '../models/bookModel.js';
-
 
 const router = express.Router();
 
-
-// api for post books in db
+// Route for Save a new Book
 router.post('/', async (request, response) => {
   try {
     if (
@@ -14,93 +12,82 @@ router.post('/', async (request, response) => {
       !request.body.publishYear
     ) {
       return response.status(400).send({
-        message:'send all required feilds - title, author, publish year'
-      })
+        message: 'Send all required fields: title, author, publishYear',
+      });
     }
-
     const newBook = {
       title: request.body.title,
       author: request.body.author,
-      publishYear: request.body.publishYear
+      publishYear: request.body.publishYear,
     };
 
     const book = await Book.create(newBook);
 
-    return response.status(200).send(book)
-
+    return response.status(201).send(book);
   } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });
   }
-})
+});
 
-//api to get books count and details from db
+// Route for Get All Books from database
 router.get('/', async (request, response) => {
   try {
     const books = await Book.find({});
-    const count = books.length;
-    return response.status(200).send({ count, books });
-  } catch(error) {
+
+    return response.status(200).json({
+      count: books.length,
+      data: books,
+    });
+  } catch (error) {
     console.log(error.message);
-    return response.status(500).send({ message: error.message });
+    response.status(500).send({ message: error.message });
   }
 });
 
-//route for getting all books from data base via id
+// Route for Get One Book from database by id
 router.get('/:id', async (request, response) => {
   try {
     const { id } = request.params;
+
     const book = await Book.findById(id);
+
     return response.status(200).json(book);
-  } catch(error) {
+  } catch (error) {
     console.log(error.message);
-    return response.status(500).send({ message: error.message });
+    response.status(500).send({ message: error.message });
   }
 });
 
-//update books using put()
+// Route for Update a Book
 router.put('/:id', async (request, response) => {
   try {
-    const { id } = request.params;
-
-    if (!request.body.title && !request.body.author && !request.body.publishYear) {
+    if (
+      !request.body.title ||
+      !request.body.author ||
+      !request.body.publishYear
+    ) {
       return response.status(400).send({
-        message: 'Send at least one field to update - title, author, publish year'
+        message: 'Send all required fields: title, author, publishYear',
       });
     }
 
-    const book = await Book.findById(id);
+    const { id } = request.params;
 
-    if (!book) {
-      return response.status(404).send({ message: 'Book not found' });
+    const result = await Book.findByIdAndUpdate(id, request.body);
+
+    if (!result) {
+      return response.status(404).json({ message: 'Book not found' });
     }
 
-    if (request.body.title) {
-      book.title = request.body.title;
-    }
-
-    if (request.body.author) {
-      book.author = request.body.author;
-    }
-
-    if (request.body.publishYear) {
-      book.publishYear = request.body.publishYear;
-    }
-
-    await book.save();
-
-    return response.status(200).send({
-      message: 'Book updated successfully',
-      book
-    });
-
+    return response.status(200).send({ message: 'Book updated successfully' });
   } catch (error) {
     console.log(error.message);
-    return response.status(500).send({ message: error.message });
+    response.status(500).send({ message: error.message });
   }
 });
 
-//api to delete book from mongoose
+// Route for Delete a book
 router.delete('/:id', async (request, response) => {
   try {
     const { id } = request.params;
@@ -112,7 +99,6 @@ router.delete('/:id', async (request, response) => {
     }
 
     return response.status(200).send({ message: 'Book deleted successfully' });
-
   } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });
