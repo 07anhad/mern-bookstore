@@ -8,13 +8,16 @@ const CreateBooks = () => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [publishYear, setPublishYear] = useState('');
+  const [borrower, setBorrower] = useState(''); // New state for borrower
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
   const handleSaveBook = () => {
     const data = {
       title,
       author,
       publishYear,
+      borrower // Include borrower in the data sent to the server
     };
     setLoading(true);
     axios
@@ -25,7 +28,7 @@ const CreateBooks = () => {
       })
       .catch((error) => {
         setLoading(false);
-        alert('An error happened. Please Chack console');
+        alert('An error happened. Please check console');
         console.log(error);
       });
   };
@@ -63,6 +66,15 @@ const CreateBooks = () => {
             className='border-2 border-gray-500 px-4 py-2  w-full '
           />
         </div>
+        <div className='my-4'>
+          <label className='text-xl mr-4 text-gray-500'>Borrower</label>
+          <input
+            type='text'
+            value={borrower}
+            onChange={(e) => setBorrower(e.target.value)}
+            className='border-2 border-gray-500 px-4 py-2 w-full'
+          />
+        </div>
         <button className='p-2 bg-sky-300 m-8' onClick={handleSaveBook}>
           Save
         </button>
@@ -71,4 +83,4 @@ const CreateBooks = () => {
   );
 }
 
-export default CreateBooks
+export default CreateBooks;

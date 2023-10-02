@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-//try mongoose.Schema if this does not work
+
 const bookSchema = new Schema(
   {
     title: {
@@ -15,10 +15,13 @@ const bookSchema = new Schema(
       type: Number,
       required: true,
     },
+    borrower: {
+      type: String, 
+    },
   },
   {
     timestamps: true
   }
-)
+);
 
 export const Book = mongoose.model('Cat', bookSchema);
