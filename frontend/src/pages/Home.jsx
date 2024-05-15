@@ -24,11 +24,11 @@ const Home = () => {
       });
   }, []);
   return (
-    <div className='p-4'>
+    <div className='p-4 gradient-background'>
       <div className='flex justify-between items-center'>
         <h1 className='text-3xl my-8'>Books List</h1>
         <Link to='/books/create'>
-          <MdOutlineAddBox className='text-sky-800 text-4xl' />
+          <MdOutlineAddBox className='text-sky-300 text-4xl' />
         </Link>
       </div>
       {loading ? (
@@ -72,13 +72,13 @@ const Home = () => {
                 <td className='border border-slate-700 rounded-md text-center'>
                   <div className='flex justify-center gap-x-4'>
                     <Link to={`/books/details/${book._id}`}>
-                      <BsInfoCircle className='text-2xl text-green-800' />
+                      <BsInfoCircle className='text-2xl text-green-300' />
                     </Link>
                     <Link to={`/books/edit/${book._id}`}>
-                      <AiOutlineEdit className='text-2xl text-yellow-600' />
+                      <AiOutlineEdit className='text-2xl text-yellow-300' />
                     </Link>
                     <Link to={`/books/delete/${book._id}`}>
-                      <MdOutlineDelete className='text-2xl text-red-600' />
+                      <MdOutlineDelete className='text-2xl text-red-500' />
                     </Link>
                   </div>
                 </td>

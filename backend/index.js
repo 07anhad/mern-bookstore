@@ -5,7 +5,7 @@ import { Book } from './models/bookModel.js'
 import bookRoute from './routes/bookRoute.js'
 import cors from 'cors';
 
-const app = express();
+const app = express(); 
 
 app.use(express.json());
 
