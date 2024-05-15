@@ -12,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get('https://mern-bookstore-kappa.vercel.app/books')
+      .get('http://localhost:5555/books')
       .then((response) => {
         console.log(response.data);
         setBooks(response.data.data);

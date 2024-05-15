@@ -31,7 +31,7 @@ const CreateBooks = () => {
     };
     setLoading(true);
     axios
-      .post('https://mern-bookstore-kappa.vercel.app/books', data)
+      .post('http://localhost:5555/books', data)
       .then(() => {
         setLoading(false);
         navigate('/');
