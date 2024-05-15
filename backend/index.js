@@ -1,17 +1,20 @@
-import express, { request, response } from "express";
-import { PORT, mongoDBURL } from "./config.js";
+import express from "express";
 import mongoose from "mongoose";
-import { Book } from "./models/bookModel.js";
-import bookRoute from "./routes/bookRoute.js";
 import cors from "cors";
+import { PORT, mongoDBURL } from "./config.js";
+import bookRoute from "./routes/bookRoute.js";
 
 const app = express();
 
 app.use(express.json());
 
-//middle ware for cors policy
+// Configure CORS
 app.use(
-  cors()
+  cors({
+    origin: "https://mern-bookstore-t5tj.vercel.app/",
+    methods: ["GET", "POST", "PUT", "DELETE"], // Add any additional methods if needed
+    credentials: true, // Add this if you're using cookies or sessions
+  })
 );
 
 app.get("/", (request, response) => {
